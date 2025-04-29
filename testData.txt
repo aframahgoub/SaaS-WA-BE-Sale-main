@@ -1,0 +1,142 @@
+{
+    "version": "3.1",
+    "data_api_version": "3.0",
+    "routing_model": {
+        "APPOINTMENT": []
+    },
+    "screens": [
+        {
+            "id": "APPOINTMENT",
+            "title": "Appointment",
+            "terminal":true,
+            "data": {
+                "department": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "__example__": [
+                        {
+                            "id": "shopping",
+                            "title": "Shopping & Groceries"
+                        },
+                        {
+                            "id": "clothing",
+                            "title": "Clothing & Apparel"
+                        },
+                        {
+                            "id": "home",
+                            "title": "Home Goods & Decor"
+                        },
+                        {
+                            "id": "electronics",
+                            "title": "Electronics & Appliances"
+                        },
+                        {
+                            "id": "beauty",
+                            "title": "Beauty & Personal Care"
+                        }
+                    ]
+                },
+                "location": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "__example__": [
+                        {
+                            "id": "1",
+                            "title": "King’s Cross, London"
+                        },
+                        {
+                            "id": "2",
+                            "title": "Oxford Street, London"
+                        },
+                        {
+                            "id": "3",
+                            "title": "Covent Garden, London"
+                        },
+                        {
+                            "id": "4",
+                            "title": "Piccadilly Circus, London"
+                        }
+                    ]
+                },
+                "is_location_enabled": {
+                    "type": "boolean",
+                    "__example__": true
+                }
+                
+            },
+            "layout": {
+                "type": "SingleColumnLayout",
+                "children": [
+                    {
+                        "type": "Form",
+                        "name": "appointment_form",
+                        "children": [
+                            {
+                                "type": "Dropdown",
+                                "label": "Department",
+                                "name": "department",
+                                "data-source": "${data.department}",
+                                "required": true,
+                                "on-select-action": {
+                                    "name": "data_exchange",
+                                    "payload": {
+                                        "trigger": "department_selected",
+                                        "department": "${form.department}"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "Dropdown",
+                                "label": "Location",
+                                "name": "location",
+                                "data-source": "${data.location}",
+                                "required": "${data.is_location_enabled}",
+                                "enabled": "${data.is_location_enabled}",
+                                "on-select-action": {
+                                    "name": "data_exchange",
+                                    "payload": {
+                                        "trigger": "location_selected",
+                                        "department": "${form.department}",
+                                        "location": "${form.location}"
+                                    }
+                                }
+                            },                          
+                            {
+                                "type": "Footer",
+                                "label": "Continue",
+                                "on-click-action": {
+                                    "name": "complete",
+                                    "payload": {
+                                        "department": "${form.department}",
+                                        "location": "${form.location}"
+                                    
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
